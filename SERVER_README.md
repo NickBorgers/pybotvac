@@ -23,7 +23,8 @@ An example of `robot_identity.json` would be:
   "traits": [
     "maps",
     "persistent_maps"
-  ]
+  ],
+  "map_id": "2019-03-21T12:13:42Z"
 }
 ```
 
@@ -46,10 +47,13 @@ To initiate cleaning call the endpoint, from the same server that can be accompl
 curl -X PUT http://127.0.0.1:8080
 ```
 
-### Stop cleaning
-The HTTP response will describe the cleaning being started:
+If you have identified the boundary_ids for specific zones in your map you can specify them with an HTTP header of `ZoneToClean` like:
 ```
-{
+curl -X PUT http://127.0.0.1:8080 -H 'ZoneToClean: 8af203d4-f95a-4ff2-8696-0ea8e18357db'
+```
+
+The HTTP response will describe the cleaning being started:
+```                                                                                                                                                                                                                 {
   "numeric_cleaning_mode": 2,
   "numeric_category": 4,
   "numeric_navigation_mode": 2,
@@ -58,6 +62,7 @@ The HTTP response will describe the cleaning being started:
 }
 ```
 
+### Stop cleaning
 To halt cleaning use the GET verb (like "get my robot back on the dock" - har har):
 ```
 curl -X GET http://127.0.0.1:8080
