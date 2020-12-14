@@ -37,8 +37,10 @@ class myHandler(BaseHTTPRequestHandler):
     if "ZoneToClean" in self.headers:
       boundary_id = self.headers["ZoneToClean"] 
       robot.start_cleaning(mode=cleaning_configuration["numeric_cleaning_mode"], navigation_mode=cleaning_configuration["numeric_navigation_mode"], category=cleaning_configuration["numeric_category"], map_id=robot_identity["map_id"], boundary_id=boundary_id)
+      print("Cleaning zone: " + boundary_id)
     else:
       robot.start_cleaning(mode=cleaning_configuration["numeric_cleaning_mode"], navigation_mode=cleaning_configuration["numeric_navigation_mode"], category=cleaning_configuration["numeric_category"])
+      print("Cleaning entire house")
     self.send_response(200)
     self.send_header('Content-type','application/json')
     self.end_headers()
@@ -53,6 +55,7 @@ class myHandler(BaseHTTPRequestHandler):
     self.send_response(200)
     self.send_header('Content-type','text/plain')
     self.end_headers()
+    print("Returning to base")
     self.wfile.write(str.encode("Returning to base"))
     return
 
