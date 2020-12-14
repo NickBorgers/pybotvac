@@ -52,6 +52,8 @@ If you have identified the boundary_ids for specific zones in your map you can s
 curl -X PUT http://127.0.0.1:8080 -H 'ZoneToClean: 8af203d4-f95a-4ff2-8696-0ea8e18357db'
 ```
 
+Note: I am identifying boundary_ids by checking `robot.state['cleaning']['boundary']` when the robot is cleaning the desired zone.
+
 The HTTP response will describe the cleaning being started:
 ```                                                                                                                                                                                                                 {
   "numeric_cleaning_mode": 2,
@@ -81,7 +83,7 @@ After=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/home/robot_controller
-ExecStart=/usr/bin/python pybotvac/botvac_server.py
+ExecStart=/usr/bin/python -u pybotvac/botvac_server.py
 Restart=always
 User=robot_controller
 
