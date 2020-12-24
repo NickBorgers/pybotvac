@@ -34,6 +34,15 @@ class myHandler(BaseHTTPRequestHandler):
   #Handler for the PUT requests to initiate cleaning
   def do_PUT(self):
     robot = Robot(serial=robot_identity["serial"], secret=robot_identity["secret"], name=robot_identity["name"], traits=robot_identity["traits"], has_persistent_maps=robot_identity["has_persistent_maps"])
+    if "Quiet" in self.headers:
+      quiet = int(self.headers["Quiet"])
+      print("Cleaning mode being overriden")
+      if quiet == 0:
+        print("Cleaning will be loud")
+        cleaning_configuration["numeric_cleaning_mode"] = 2
+      else:
+        print("Cleaning will be quiet")
+        cleaning_configuration["numeric_cleaning_mode"] = 1
     if "ZoneToClean" in self.headers:
       boundary_id = self.headers["ZoneToClean"] 
       robot.start_cleaning(mode=cleaning_configuration["numeric_cleaning_mode"], navigation_mode=cleaning_configuration["numeric_navigation_mode"], category=cleaning_configuration["numeric_category"], map_id=robot_identity["map_id"], boundary_id=boundary_id)
@@ -45,6 +54,8 @@ class myHandler(BaseHTTPRequestHandler):
     self.send_header('Content-type','application/json')
     self.end_headers()
     # Send the cleaning configuration used
+    print("Full cleaning configuration: ")
+    print(cleaning_configuration)
     self.wfile.write(str.encode(json.dumps(cleaning_configuration)))
     return
 
