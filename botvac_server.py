@@ -40,9 +40,11 @@ class myHandler(BaseHTTPRequestHandler):
       if quiet == 0:
         print("Cleaning will be loud")
         cleaning_configuration["numeric_cleaning_mode"] = 2
+        cleaning_configuration["cleaning_mode"] = "turbo"
       else:
         print("Cleaning will be quiet")
         cleaning_configuration["numeric_cleaning_mode"] = 1
+        cleaning_configuration["cleaning_mode"] = "quiet"
     if "ZoneToClean" in self.headers:
       boundary_id = self.headers["ZoneToClean"] 
       robot.start_cleaning(mode=cleaning_configuration["numeric_cleaning_mode"], navigation_mode=cleaning_configuration["numeric_navigation_mode"], category=cleaning_configuration["numeric_category"], map_id=robot_identity["map_id"], boundary_id=boundary_id)
